@@ -1684,6 +1684,9 @@ async function callClaude(system, user, outputId, btnId, onDone) {
     el.classList.remove('active'); el.classList.add('done');
     el.textContent = text;
     if (onDone) onDone(text);
+    // Sauvegarde dans l'historique
+    const typeMap = { 's-output':'Script', 'h-output':'Hook', 'v-output':'Vidéo IA', 't-output':'Thumbnail', 'st-output':'Stratégie', 'tr-output':'Tendances' };
+    saveToHistory(typeMap[outputId] || 'Génération', text);
     showToast('✅ Généré !');
   } catch {
     el.textContent = 'Erreur de connexion. Réessaie.';
@@ -1973,16 +1976,6 @@ function nextStep(current, next) {
     document.getElementById('onboarding-overlay').style.display = 'none';
     localStorage.setItem('vpp_onboarded', '1');
   }
-}
-
-// Patch callClaude pour sauvegarder l'historique
-const _origCallClaude = callClaude;
-async function callClaude(system, user, outputId, btnId, onDone) {
-  await _origCallClaude(system, user, outputId, btnId, (text) => {
-    if (onDone) onDone(text);
-    const typeMap = { 's-output':'Script', 'h-output':'Hook', 'v-output':'Vidéo IA', 't-output':'Thumbnail', 'st-output':'Stratégie', 'tr-output':'Tendances' };
-    saveToHistory(typeMap[outputId] || 'Génération', text);
-  });
 }
 
 loadTheme();

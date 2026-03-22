@@ -857,7 +857,10 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
         </div>
         <div class="form-group">
           <label>Mot de passe</label>
-          <input type="password" id="reg-pass" placeholder="min. 6 caractères">
+          <div style="position:relative;">
+            <input type="password" id="reg-pass" placeholder="min. 6 caractères" style="padding-right:44px;">
+            <button type="button" onclick="togglePass('reg-pass', this)" style="position:absolute;right:0;top:0;height:100%;width:42px;background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;display:flex;align-items:center;justify-content:center;">👁️</button>
+          </div>
         </div>
         <div class="form-group">
           <label>Code d'accès</label>
@@ -877,7 +880,10 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
         </div>
         <div class="form-group">
           <label>Mot de passe</label>
-          <input type="password" id="log-pass" placeholder="••••••••">
+          <div style="position:relative;">
+            <input type="password" id="log-pass" placeholder="••••••••" style="padding-right:44px;">
+            <button type="button" onclick="togglePass('log-pass', this)" style="position:absolute;right:0;top:0;height:100%;width:42px;background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;display:flex;align-items:center;justify-content:center;">👁️</button>
+          </div>
         </div>
         <button class="btn btn-primary" onclick="handleLogin()">→ Se connecter</button>
       </div>
@@ -1847,6 +1853,17 @@ function filterLibrary(val) {
 function copyOutput(id) { copyText(document.getElementById(id).textContent); }
 function copyText(text) {
   navigator.clipboard.writeText(text).then(() => showToast('📋 Copié !'));
+}
+
+function togglePass(inputId, btn) {
+  const input = document.getElementById(inputId);
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    btn.textContent = '👁️';
+  }
 }
 </script>
 </body>

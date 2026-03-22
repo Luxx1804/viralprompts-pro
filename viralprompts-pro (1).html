@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ViralPrompts Pro — Crée des vidéos virales avec l'IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --white: #f5f2eb;
+    --accent: #ff3c00;
+    --accent2: #ffcc00;
+    --gray: #1a1a1a;
+    --muted: #555;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 6vw 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,60,0,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 2px;
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(64px, 12vw, 160px);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+
+  h1 span {
+    color: var(--accent);
+    display: block;
+  }
+
+  .hero-sub {
+    font-size: clamp(16px, 2vw, 20px);
+    color: #aaa;
+    max-width: 520px;
+    margin-top: 28px;
+    line-height: 1.6;
+    animation: fadeUp 0.7s 0.25s ease both;
+  }
+
+  .hero-cta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 48px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.7s 0.4s ease both;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--white);
+    padding: 18px 40px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.08em;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--accent2);
+    transform: translate(5px, 5px);
+    transition: transform 0.2s;
+  }
+
+  .btn-primary:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 var(--accent2);
+  }
+
+  .btn-primary:hover::after {
+    transform: translate(7px, 7px);
+  }
+
+  .price-tag {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--accent2);
+    letter-spacing: 0.04em;
+  }
+
+  .price-old {
+    font-size: 18px;
+    color: var(--muted);
+    text-decoration: line-through;
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 6vw;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    animation: fadeUp 0.7s 0.6s ease both;
+  }
+
+  .scroll-hint::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--muted);
+  }
+
+  /* TICKER */
+  .ticker {
+    background: var(--accent);
+    overflow: hidden;
+    padding: 14px 0;
+    white-space: nowrap;
+  }
+
+  .ticker-track {
+    display: inline-block;
+    animation: ticker 20s linear infinite;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.12em;
+  }
+
+  .ticker-track span {
+    margin: 0 30px;
+    color: var(--white);
+  }
+
+  .ticker-track .dot {
+    color: var(--accent2);
+    margin: 0 10px;
+  }
+
+  /* SECTION */
+  section {
+    padding: 100px 6vw;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 7vw, 90px);
+    line-height: 0.95;
+    margin-bottom: 20px;
+  }
+
+  /* WHAT'S INSIDE */
+  .inside-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .inside-card {
+    background: var(--gray);
+    padding: 36px 30px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .inside-card:hover {
+    background: #222;
+  }
+
+  .inside-card::before {
+    content: attr(data-num);
+    position: absolute;
+    top: -10px; right: 16px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+  }
+
+  .inside-card .icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  .inside-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 0.04em;
+    margin-bottom: 10px;
+    color: var(--accent2);
+  }
+
+  .inside-card p {
+    font-size: 14px;
+    color: #888;
+    line-height: 1.7;
+  }
+
+  /* PROMPTS PREVIEW */
+  .prompts-section {
+    background: var(--gray);
+  }
+
+  .prompt-list {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .prompt-item {
+    background: var(--black);
+    padding: 28px 32px;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    transition: transform 0.2s;
+    cursor: default;
+  }
+
+  .prompt-item:hover {
+    transform: translateX(8px);
+  }
+
+  .prompt-item:hover .prompt-tag {
+    background: var(--accent);
+    color: var(--white);
+  }
+
+  .prompt-tag {
+    background: rgba(255,60,0,0.15);
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s;
+    margin-top: 2px;
+    border-radius: 2px;
+  }
+
+  .prompt-text {
+    font-size: 15px;
+    color: #ccc;
+    line-height: 1.6;
+  }
+
+  .prompt-text strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .blurred {
+    filter: blur(5px);
+    user-select: none;
+    opacity: 0.5;
+  }
+
+  .unlock-msg {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .unlock-msg a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  /* SOCIAL PROOF */
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .review-card {
+    background: var(--gray);
+    padding: 32px 28px;
+  }
+
+  .stars {
+    color: var(--accent2);
+    font-size: 16px;
+    margin-bottom: 14px;
+    letter-spacing: 2px;
+  }
+
+  .review-card p {
+    font-size: 14px;
+    color: #999;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .reviewer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .reviewer-info strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .reviewer-info span {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* WHERE TO SELL */
+  .platforms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 48px;
+  }
+
+  .platform-pill {
+    background: var(--gray);
+    border: 1px solid #2a2a2a;
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .platform-pill:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .platform-pill .pill-icon {
+    font-size: 20px;
+  }
+
+  /* CTA FINAL */
+  .cta-final {
+    background: var(--accent);
+    text-align: center;
+    padding: 100px 6vw;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-final::before {
+    content: 'VIRAL';
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30vw;
+    color: rgba(0,0,0,0.08);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .cta-final h2 {
+    font-size: clamp(48px, 8vw, 110px);
+    color: var(--white);
+    position: relative;
+  }
+
+  .cta-final p {
+    color: rgba(255,255,255,0.75);
+    font-size: 18px;
+    max-width: 480px;
+    margin: 20px auto 48px;
+    line-height: 1.6;
+    position: relative;
+  }
+
+  .btn-white {
+    background: var(--white);
+    color: var(--black);
+    padding: 20px 48px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.1em;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+
+  .btn-white:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.3);
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 6vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #1a1a1a;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  footer strong {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--white);
+    letter-spacing: 0.06em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* STAT ROW */
+  .stats-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .stat-box {
+    background: var(--gray);
+    flex: 1;
+    min-width: 160px;
+    padding: 36px 28px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    color: var(--accent2);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: #666;
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* GUARANTEE */
+  .guarantee {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    background: var(--gray);
+    padding: 36px 40px;
+    margin-top: 60px;
+    border-left: 4px solid var(--accent2);
+    flex-wrap: wrap;
+  }
+
+  .guarantee-icon {
+    font-size: 48px;
+    flex-shrink: 0;
+  }
+
+  .guarantee h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--accent2);
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+
+  .guarantee p {
+    font-size: 14px;
+    color: #888;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge">⚡ App Web · Accès illimité · IA en direct</div>
+  <h1>Viral<span>Prompts</span>Pro</h1>
+  <p class="hero-sub">Une app propulsée par l'IA qui génère tes scripts viraux, analyse tes hooks, crée tes prompts vidéo et planifie ton contenu — en quelques secondes.</p>
+  <div class="hero-cta">
+    <a href="#buy" class="btn-primary">Accéder à l'app →</a>
+    <div>
+      <span class="price-old">Valeur réelle : 49€</span>
+      <span class="price-tag">9,99€</span>
+    </div>
+  </div>
+  <div class="scroll-hint">Voir le contenu</div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span>TikTok</span><span class="dot">✦</span>
+    <span>Instagram Reels</span><span class="dot">✦</span>
+    <span>YouTube Shorts</span><span class="dot">✦</span>
+    <span>Sora</span><span class="dot">✦</span>
+    <span>Runway ML</span><span class="dot">✦</span>
+    <span>Kling AI</span><span class="dot">✦</span>
+    <span>Vidéos virales</span><span class="dot">✦</span>
+    <span>Contenu IA</span><span class="dot">✦</span>
+    <span>TikTok</span><span class="dot">✦</span>
+    <span>Instagram Reels</span><span class="dot">✦</span>
+    <span>YouTube Shorts</span><span class="dot">✦</span>
+    <span>Sora</span><span class="dot">✦</span>
+    <span>Runway ML</span><span class="dot">✦</span>
+    <span>Kling AI</span><span class="dot">✦</span>
+    <span>Vidéos virales</span><span class="dot">✦</span>
+    <span>Contenu IA</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<section>
+  <div class="section-label">Pourquoi ça marche</div>
+  <h2>Des chiffres<br>qui parlent</h2>
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-num">7</div>
+      <div class="stat-label">Outils IA inclus</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">50</div>
+      <div class="stat-label">Prompts intégrés</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Générations IA</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">9,99€</div>
+      <div class="stat-label">Accès à vie</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S INSIDE -->
+<section style="background: var(--gray);">
+  <div class="section-label">Ce que tu débloques</div>
+  <h2>7 outils IA<br>dans une app</h2>
+  <div class="inside-grid">
+    <div class="inside-card" data-num="01">
+      <div class="icon">🎬</div>
+      <h3>Générateur de Script</h3>
+      <p>Choisis ta plateforme, ta niche, ton format — l'IA génère un script complet prêt à tourner en quelques secondes.</p>
+    </div>
+    <div class="inside-card" data-num="02">
+      <div class="icon">🎯</div>
+      <h3>Analyseur de Hook</h3>
+      <p>Colle ton accroche — l'IA te donne un score sur 10 et te propose 3 versions améliorées instantanément.</p>
+    </div>
+    <div class="inside-card" data-num="03">
+      <div class="icon">🤖</div>
+      <h3>Prompt Vidéo IA</h3>
+      <p>Génère des prompts optimisés pour Sora, Runway ML et Kling AI. Qualité cinématique garantie.</p>
+    </div>
+    <div class="inside-card" data-num="04">
+      <div class="icon">🖼️</div>
+      <h3>Concept Thumbnail</h3>
+      <p>Brief visuel complet avec palette, texte, composition et prompt Midjourney pour créer une thumbnail qui fait cliquer.</p>
+    </div>
+    <div class="inside-card" data-num="05">
+      <div class="icon">📅</div>
+      <h3>Stratégie 7 Jours</h3>
+      <p>Plan de contenu complet jour par jour, personnalisé selon ta niche, ta plateforme et ton objectif.</p>
+    </div>
+    <div class="inside-card" data-num="06">
+      <div class="icon">🔥</div>
+      <h3>Analyseur de Niche</h3>
+      <p>Analyse n'importe quelle niche : saturation, potentiel, 5 angles viraux et 3 idées de vidéos à faire cette semaine.</p>
+    </div>
+    <div class="inside-card" data-num="07">
+      <div class="icon">📚</div>
+      <h3>Bibliothèque de Prompts</h3>
+      <p>50 prompts prêts à l'emploi, filtrables par catégorie, copiables en 1 clic. TikTok, YouTube, Vidéo IA, Produit...</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROMPTS PREVIEW -->
+<section class="prompts-section">
+  <div class="section-label">Demo live</div>
+  <h2>L'IA génère<br>pour toi</h2>
+  <div class="prompt-list">
+    <div class="prompt-item">
+      <span class="prompt-tag">Script</span>
+      <div class="prompt-text"><strong>Tu tapes</strong> "fitness / TikTok / hook choc" → <strong>l'IA écrit</strong> un script complet avec hook, développement et CTA en 5 secondes.</div>
+    </div>
+    <div class="prompt-item">
+      <span class="prompt-tag">Hook</span>
+      <div class="prompt-text"><strong>Tu colles</strong> ton accroche → <strong>l'IA analyse</strong> : Pouvoir d'arrêt 7/10, Curiosité 8/10, et te donne 3 versions améliorées.</div>
+    </div>
+    <div class="prompt-item">
+      <span class="prompt-tag">Vidéo IA</span>
+      <div class="prompt-text"><strong>Tu choisis</strong> Runway ML + ambiance nuit + drone → <strong>l'IA génère</strong> le prompt parfait à copier-coller directement dans l'outil.</div>
+    </div>
+    <div class="prompt-item blurred">
+      <span class="prompt-tag">Stratégie</span>
+      <div class="prompt-text"><strong>Tu renseignes</strong> ta niche et ton objectif → <strong>l'IA planifie</strong> tes 7 prochains jours de contenu avec des idées spécifiques chaque jour.</div>
+    </div>
+    <div class="prompt-item blurred">
+      <span class="prompt-tag">Niche</span>
+      <div class="prompt-text"><strong>Tu tapes</strong> "gaming" → <strong>l'IA analyse</strong> la saturation, le potentiel, 5 angles viraux et 3 vidéos à faire cette semaine.</div>
+    </div>
+  </div>
+  <p class="unlock-msg">🔒 Accès à tous les outils après inscription — <a href="#buy">obtenir l'accès pour 9,99€ →</a></p>
+</section>
+
+<!-- REVIEWS -->
+<section>
+  <div class="section-label">Ils l'ont testé</div>
+  <h2>Ce qu'ils<br>en disent</h2>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>"J'ai généré ma première vidéo virale en 20 minutes avec ces prompts. Mon Reel a dépassé 200K vues en 48h."</p>
+      <div class="reviewer">
+        <div class="avatar" style="background:#ff3c00;">M</div>
+        <div class="reviewer-info">
+          <strong>Mathieu R.</strong>
+          <span>Créateur de contenu</span>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>"Les prompts pour Runway sont incroyables. La qualité des vidéos générées ressemble à du vrai contenu professionnel."</p>
+      <div class="reviewer">
+        <div class="avatar" style="background:#ffcc00; color:#000;">S</div>
+        <div class="reviewer-info">
+          <strong>Sofia L.</strong>
+          <span>Social Media Manager</span>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>"J'ai revendu ce pack à mes clients en agence. Chaque euro investi ici m'a rapporté 10x. Indispensable."</p>
+      <div class="reviewer">
+        <div class="avatar" style="background:#333;">K</div>
+        <div class="reviewer-info">
+          <strong>Kevin T.</strong>
+          <span>Freelance Digital</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="guarantee">
+    <div class="guarantee-icon">🛡️</div>
+    <div>
+      <h3>Garantie satisfait ou remboursé 7 jours</h3>
+      <p>Si tu n'es pas 100% satisfait de l'app dans les 7 jours suivant ton accès, je te rembourse intégralement. Sans question posée.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHERE TO SELL -->
+<section style="background: var(--gray);">
+  <div class="section-label">Bonus inclus</div>
+  <h2>Droits de<br>revente inclus</h2>
+  <p style="color:#888; max-width:520px; margin-top:16px; line-height:1.7;">Tu peux <strong style="color:var(--white)">revendre l'accès à cette app</strong> à tes propres clients et garder 100% des profits. Tu achètes une fois, tu revends à l'infini.</p>
+  <div class="platforms">
+    <div class="platform-pill"><span class="pill-icon">🟠</span> Gumroad</div>
+    <div class="platform-pill"><span class="pill-icon">🟡</span> Etsy</div>
+    <div class="platform-pill"><span class="pill-icon">🟢</span> Fiverr</div>
+    <div class="platform-pill"><span class="pill-icon">🔵</span> Payhip</div>
+    <div class="platform-pill"><span class="pill-icon">🟣</span> TikTok Shop</div>
+    <div class="platform-pill"><span class="pill-icon">⚫</span> Discord</div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final" id="buy">
+  <h2>Lance-toi<br>maintenant</h2>
+  <p>Accès immédiat à l'app. 7 outils IA. Générations illimitées. 9,99€ une seule fois.</p>
+  <a href="https://gumroad.com/TONLIEN" class="btn-white" target="_blank">Accéder à l'app pour 9,99€ →</a>
+  <div style="margin-top:24px;position:relative;">
+    <a href="viralprompts-access.html" style="color:rgba(255,255,255,0.5);font-size:13px;text-decoration:none;">
+      Déjà membre ? Accéder à mon espace →
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <strong>ViralPrompts Pro</strong>
+  <span>© 2025 ViralPrompts Pro · App Web · Accès à vie</span>
+  <a href="viralprompts-access.html" style="color:var(--accent);text-decoration:none;font-weight:600;">Espace Membre</a>
+</footer>
+
+</body>
+</html>

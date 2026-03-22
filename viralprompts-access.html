@@ -643,6 +643,25 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
 ::-webkit-scrollbar-track { background:var(--surface); }
 ::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
 
+/* Back button */
+.back-btn {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  color:var(--muted);
+  padding:6px 14px;
+  border-radius:4px;
+  font-family:'Syne',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  margin-bottom:16px;
+  transition:all 0.15s;
+}
+.back-btn:hover { border-color:var(--accent); color:var(--accent); }
+
 /* ══════════════════════════════════════
    SCREEN 4 — ADMIN PANEL
 ══════════════════════════════════════ */
@@ -928,7 +947,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
   <div class="app-shell">
 
     <header class="topbar">
-      <div class="topbar-logo">⚡ Viral<span>Prompts</span>Pro <span class="badge-pro">Membre</span></div>
+      <div class="topbar-logo" onclick="showPage('dashboard', document.querySelector('.nav-item'))" style="cursor:pointer;">⚡ Viral<span>Prompts</span>Pro <span class="badge-pro">Membre</span></div>
       <div class="topbar-right">
         <div class="user-pill">👤 <span id="user-display">Membre</span></div>
         <button class="logout-btn" onclick="handleLogout()">Déconnexion</button>
@@ -986,6 +1005,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
 
       <!-- SCRIPT -->
       <div class="page" id="page-script">
+        <button class="back-btn" onclick="showPage('dashboard',document.querySelector('.nav-item'))">← Dashboard</button>
         <div class="page-header"><h1>🎬 SCRIPT VIRAL</h1><p>Script complet prêt à tourner — propulsé par Claude IA</p></div>
         <div class="card">
           <div class="card-title">⚙️ Paramètres <span class="ct-badge">IA LIVE</span></div>
@@ -1017,6 +1037,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
 
       <!-- HOOK -->
       <div class="page" id="page-hook">
+        <button class="back-btn" onclick="showPage('dashboard',document.querySelector('.nav-item'))">← Dashboard</button>
         <div class="page-header"><h1>🎯 HOOK ANALYZER</h1><p>Score + version améliorée de ton accroche</p></div>
         <div class="card">
           <div class="card-title">🔍 Ton Hook <span class="ct-badge">IA LIVE</span></div>
@@ -1041,6 +1062,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
 
       <!-- VIDEO -->
       <div class="page" id="page-video">
+        <button class="back-btn" onclick="showPage('dashboard',document.querySelector('.nav-item'))">← Dashboard</button>
         <div class="page-header"><h1>🤖 PROMPT VIDÉO IA</h1><p>Optimisé pour Sora, Runway, Kling, Pika</p></div>
         <div class="card">
           <div class="card-title">⚙️ Paramètres <span class="ct-badge">IA LIVE</span></div>
@@ -1071,6 +1093,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
 
       <!-- THUMBNAIL -->
       <div class="page" id="page-thumbnail">
+        <button class="back-btn" onclick="showPage('dashboard',document.querySelector('.nav-item'))">← Dashboard</button>
         <div class="page-header"><h1>🖼️ CONCEPT THUMBNAIL</h1><p>Brief visuel complet pour une thumbnail qui fait cliquer</p></div>
         <div class="card">
           <div class="card-title">🎨 Paramètres <span class="ct-badge">IA LIVE</span></div>
@@ -1097,6 +1120,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
 
       <!-- STRATEGY -->
       <div class="page" id="page-strategy">
+        <button class="back-btn" onclick="showPage('dashboard',document.querySelector('.nav-item'))">← Dashboard</button>
         <div class="page-header"><h1>📅 STRATÉGIE 7 JOURS</h1><p>Plan de contenu complet et personnalisé</p></div>
         <div class="card">
           <div class="card-title">🗓️ Génère ton plan <span class="ct-badge">IA LIVE</span></div>
@@ -1122,6 +1146,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
 
       <!-- TRENDS -->
       <div class="page" id="page-trends">
+        <button class="back-btn" onclick="showPage('dashboard',document.querySelector('.nav-item'))">← Dashboard</button>
         <div class="page-header"><h1>🔥 TENDANCES & NICHES</h1><p>Analyse une niche et ses opportunités</p></div>
         <div class="card">
           <div class="card-title">🔍 Explorer <span class="ct-badge">IA LIVE</span></div>
@@ -1143,6 +1168,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
 
       <!-- LIBRARY -->
       <div class="page" id="page-library">
+        <button class="back-btn" onclick="showPage('dashboard',document.querySelector('.nav-item'))">← Dashboard</button>
         <div class="page-header"><h1>📚 BIBLIOTHÈQUE</h1><p>Les 50 prompts — filtrables et copiables</p></div>
         <div class="card">
           <input type="text" placeholder="🔍 Rechercher..." oninput="filterLibrary(this.value)" style="margin-bottom:12px;">
@@ -1161,6 +1187,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
 
       <!-- RESELL -->
       <div class="page" id="page-resell">
+        <button class="back-btn" onclick="showPage('dashboard',document.querySelector('.nav-item'))">← Dashboard</button>
         <div class="page-header"><h1>💰 GUIDE REVENTE</h1><p>Transforme ce pack en machine à cash</p></div>
         <div class="card">
           <div class="card-title">📋 Tes droits</div>

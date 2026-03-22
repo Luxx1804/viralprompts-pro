@@ -1328,11 +1328,7 @@ const ADMIN_PASSWORD = 'admin2025vpp';
 // Format : 'VPP-XXXXXX',
 // ══════════════════════════════════════════════════════════
 const STATIC_CODES = [
-  'VPP-DSZUFQ',
-  'VPP-YAAUNT',
-  'VPP-C47TX4',
-  'VPP-KC9K6P',
-  'VPP-RK7JS3',
+  // 'VPP-EXEMPLE',  // remplace par tes vrais codes
 ];
 
 function loadStaticCodes() {
@@ -1673,7 +1669,7 @@ async function callClaude(system, user, outputId, btnId, onDone) {
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> En cours...'; }
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('https://viralprompts-api.lucaslls-dewaele.workers.dev', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

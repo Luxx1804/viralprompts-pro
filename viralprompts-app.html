@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ViralPrompts Pro — Espace Membre</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #070707;
+  --surface: #111111;
+  --surface2: #1a1a1a;
+  --border: #222222;
+  --accent: #ff3c00;
+  --accent2: #ffcc00;
+  --green: #00e676;
+  --blue: #2979ff;
+  --purple: #9c27b0;
+  --white: #f0ede6;
+  --muted: #555;
+  --text: #c8c4bc;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Syne', sans-serif;
+  --radius: 4px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 14px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* NOISE */
+body::after {
+  content:'';
+  position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:9999;
+}
+
+/* ── LAYOUT ── */
+.shell {
+  display:grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: 56px 1fr;
+  min-height:100vh;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  grid-column:1/-1;
+  background: var(--surface);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.topbar-logo {
+  font-family: var(--font-display);
+  font-size:22px;
+  letter-spacing:0.06em;
+  color:var(--white);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.topbar-logo span { color:var(--accent); }
+
+.badge-pro {
+  background:var(--accent);
+  color:var(--white);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:0.14em;
+  padding:2px 8px;
+  border-radius:2px;
+  text-transform:uppercase;
+}
+
+.topbar-right {
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.credits-pill {
+  background:var(--surface2);
+  border:1px solid var(--border);
+  padding:5px 12px;
+  border-radius:20px;
+  font-size:12px;
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.credits-pill b { color:var(--accent2); }
+
+.avatar {
+  width:32px; height:32px;
+  border-radius:50%;
+  background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);
+  font-size:16px;
+  cursor:pointer;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  padding:20px 0;
+  position:sticky;
+  top:56px;
+  height:calc(100vh - 56px);
+  overflow-y:auto;
+}
+
+.nav-section {
+  padding:0 12px;
+  margin-bottom:6px;
+}
+
+.nav-label {
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--muted);
+  padding:0 10px;
+  margin:16px 0 6px;
+}
+
+.nav-item {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:9px 10px;
+  border-radius:var(--radius);
+  cursor:pointer;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:600;
+  transition:background 0.15s, color 0.15s;
+  user-select:none;
+  border:none;
+  background:none;
+  width:100%;
+  text-align:left;
+}
+
+.nav-item:hover { background:var(--surface2); color:var(--white); }
+.nav-item.active { background:rgba(255,60,0,0.12); color:var(--accent); }
+.nav-item.active .nav-icon { color:var(--accent); }
+
+.nav-icon { font-size:16px; flex-shrink:0; }
+
+.nav-badge {
+  margin-left:auto;
+  background:var(--accent);
+  color:var(--white);
+  font-size:9px;
+  font-weight:800;
+  padding:1px 6px;
+  border-radius:10px;
+}
+
+/* ── MAIN ── */
+.main {
+  padding:32px 36px;
+  overflow-y:auto;
+  height:calc(100vh - 56px);
+}
+
+/* ── PAGE HEADER ── */
+.page-header {
+  margin-bottom:28px;
+}
+
+.page-header h1 {
+  font-family:var(--font-display);
+  font-size:36px;
+  letter-spacing:0.04em;
+  line-height:1;
+}
+
+.page-header p {
+  color:var(--text);
+  margin-top:6px;
+  font-size:13px;
+}
+
+/* ── CARDS ── */
+.card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:24px;
+  margin-bottom:20px;
+}
+
+.card-title {
+  font-family:var(--font-display);
+  font-size:20px;
+  letter-spacing:0.04em;
+  margin-bottom:16px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.card-title .ct-icon { font-size:20px; }
+.card-title .ct-badge {
+  margin-left:auto;
+  font-family:var(--font-body);
+  font-size:9px;
+  font-weight:800;
+  background:rgba(0,230,118,0.15);
+  color:var(--green);
+  padding:2px 8px;
+  border-radius:10px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+}
+
+/* ── FORM ELEMENTS ── */
+label {
+  display:block;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+
+input, select, textarea {
+  width:100%;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  color:var(--white);
+  font-family:var(--font-body);
+  font-size:13px;
+  padding:10px 14px;
+  outline:none;
+  transition:border-color 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color:var(--accent);
+}
+
+select option { background:var(--surface2); }
+
+textarea {
+  resize:vertical;
+  min-height:80px;
+  line-height:1.6;
+}
+
+.form-row {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-bottom:14px;
+}
+
+.form-group { margin-bottom:14px; }
+
+/* ── BUTTONS ── */
+.btn {
+  padding:10px 20px;
+  border:none;
+  border-radius:var(--radius);
+  cursor:pointer;
+  font-family:var(--font-body);
+  font-size:13px;
+  font-weight:700;
+  transition:transform 0.15s, opacity 0.15s;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+
+.btn:hover:not(:disabled) { transform:translateY(-1px); opacity:0.9; }
+.btn:active:not(:disabled) { transform:translateY(0); }
+.btn:disabled { opacity:0.4; cursor:not-allowed; }
+
+.btn-primary { background:var(--accent); color:var(--white); }
+.btn-secondary { background:var(--surface2); color:var(--white); border:1px solid var(--border); }
+.btn-green { background:var(--green); color:#000; }
+.btn-blue { background:var(--blue); color:var(--white); }
+.btn-yellow { background:var(--accent2); color:#000; }
+.btn-sm { padding:6px 14px; font-size:12px; }
+
+/* ── OUTPUT BOX ── */
+.output-box {
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px;
+  min-height:120px;
+  font-size:13px;
+  line-height:1.8;
+  color:var(--text);
+  white-space:pre-wrap;
+  position:relative;
+  transition:border-color 0.3s;
+}
+
+.output-box.active { border-color:var(--accent); }
+.output-box.done { border-color:var(--green); }
+
+.output-placeholder {
+  color:var(--muted);
+  font-style:italic;
+  text-align:center;
+  padding:30px 0;
+}
+
+.output-actions {
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+  flex-wrap:wrap;
+}
+
+/* ── COPY BUTTON ── */
+.copy-btn {
+  position:absolute;
+  top:12px; right:12px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:4px 10px;
+  border-radius:var(--radius);
+  font-size:11px;
+  cursor:pointer;
+  font-family:var(--font-body);
+  font-weight:700;
+  transition:background 0.15s;
+}
+
+.copy-btn:hover { background:var(--border); }
+
+/* ── LOADING DOTS ── */
+.loading-dots {
+  display:inline-flex;
+  gap:4px;
+  align-items:center;
+}
+
+.loading-dots span {
+  width:6px; height:6px;
+  background:var(--accent);
+  border-radius:50%;
+  animation:bounce 1s infinite;
+}
+
+.loading-dots span:nth-child(2) { animation-delay:0.15s; }
+.loading-dots span:nth-child(3) { animation-delay:0.3s; }
+
+@keyframes bounce {
+  0%,60%,100% { transform:translateY(0); opacity:0.6; }
+  30% { transform:translateY(-6px); opacity:1; }
+}
+
+/* ── SCORE METER ── */
+.score-meter {
+  margin:16px 0;
+}
+
+.score-label {
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:6px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.score-bar-track {
+  height:8px;
+  background:var(--surface2);
+  border-radius:4px;
+  overflow:hidden;
+}
+
+.score-bar-fill {
+  height:100%;
+  border-radius:4px;
+  transition:width 1s ease;
+  width:0;
+}
+
+/* ── TAG PILLS ── */
+.tag-row {
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-bottom:14px;
+}
+
+.tag {
+  padding:4px 12px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+  border:1px solid transparent;
+  transition:all 0.15s;
+  user-select:none;
+}
+
+.tag.active-tag {
+  background:var(--accent);
+  color:var(--white);
+  border-color:var(--accent);
+}
+
+.tag:not(.active-tag) {
+  background:var(--surface2);
+  color:var(--text);
+  border-color:var(--border);
+}
+
+.tag:hover:not(.active-tag) { border-color:var(--accent); color:var(--accent); }
+
+/* ── PROMPT LIBRARY ── */
+.prompt-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+  gap:12px;
+}
+
+.prompt-card {
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px;
+  cursor:pointer;
+  transition:border-color 0.2s, transform 0.15s;
+  position:relative;
+}
+
+.prompt-card:hover {
+  border-color:var(--accent);
+  transform:translateY(-2px);
+}
+
+.prompt-card-tag {
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  padding:2px 8px;
+  border-radius:2px;
+  margin-bottom:10px;
+  display:inline-block;
+}
+
+.prompt-card-title {
+  font-weight:700;
+  font-size:13px;
+  margin-bottom:8px;
+}
+
+.prompt-card-text {
+  font-size:12px;
+  color:var(--text);
+  line-height:1.6;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+.prompt-card-copy {
+  position:absolute;
+  top:12px; right:12px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  color:var(--muted);
+  width:28px; height:28px;
+  border-radius:var(--radius);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;
+  cursor:pointer;
+  transition:all 0.15s;
+}
+
+.prompt-card-copy:hover { border-color:var(--accent); color:var(--accent); }
+
+/* ── STRATEGY GRID ── */
+.strategy-week {
+  display:grid;
+  grid-template-columns:repeat(7, 1fr);
+  gap:4px;
+  margin-bottom:20px;
+}
+
+.day-card {
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:10px 8px;
+  text-align:center;
+  min-height:90px;
+}
+
+.day-label {
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+
+.day-task {
+  font-size:10px;
+  color:var(--text);
+  line-height:1.5;
+}
+
+.day-card.highlight {
+  border-color:var(--accent);
+  background:rgba(255,60,0,0.06);
+}
+
+/* ── HOOK ANALYZER ── */
+.score-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin:16px 0;
+}
+
+.score-item {
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:14px;
+}
+
+.score-item-label {
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+
+.score-item-val {
+  font-family:var(--font-display);
+  font-size:32px;
+  line-height:1;
+}
+
+/* ── TABS ── */
+.tabs {
+  display:flex;
+  gap:2px;
+  background:var(--surface2);
+  border-radius:var(--radius);
+  padding:3px;
+  margin-bottom:20px;
+  border:1px solid var(--border);
+}
+
+.tab {
+  flex:1;
+  text-align:center;
+  padding:8px 16px;
+  border-radius:2px;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  color:var(--muted);
+  transition:background 0.15s, color 0.15s;
+}
+
+.tab.active { background:var(--accent); color:var(--white); }
+.tab:hover:not(.active) { color:var(--white); }
+
+/* ── DASHBOARD WELCOME ── */
+.welcome-banner {
+  background:linear-gradient(135deg, rgba(255,60,0,0.15) 0%, rgba(255,204,0,0.08) 100%);
+  border:1px solid rgba(255,60,0,0.25);
+  border-radius:var(--radius);
+  padding:24px 28px;
+  margin-bottom:28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.welcome-banner h2 {
+  font-family:var(--font-display);
+  font-size:28px;
+  letter-spacing:0.04em;
+}
+
+.welcome-banner p {
+  color:var(--text);
+  font-size:13px;
+  margin-top:4px;
+}
+
+.stat-pills {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.stat-pill {
+  background:var(--surface);
+  border:1px solid var(--border);
+  padding:10px 18px;
+  border-radius:var(--radius);
+  text-align:center;
+}
+
+.stat-pill-num {
+  font-family:var(--font-display);
+  font-size:26px;
+  color:var(--accent2);
+  line-height:1;
+}
+
+.stat-pill-label {
+  font-size:10px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  margin-top:2px;
+}
+
+/* ── QUICK ACCESS ── */
+.quick-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));
+  gap:10px;
+  margin-bottom:28px;
+}
+
+.quick-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:18px 16px;
+  cursor:pointer;
+  transition:border-color 0.2s, transform 0.15s;
+  text-align:center;
+}
+
+.quick-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+
+.quick-card-icon { font-size:28px; margin-bottom:10px; }
+.quick-card-label { font-size:12px; font-weight:700; }
+.quick-card-sub { font-size:11px; color:var(--muted); margin-top:3px; }
+
+/* ── PAGE VISIBILITY ── */
+.page { display:none; }
+.page.visible { display:block; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:var(--surface); }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:var(--muted); }
+
+/* ── TOAST ── */
+.toast {
+  position:fixed;
+  bottom:24px; right:24px;
+  background:var(--green);
+  color:#000;
+  padding:10px 20px;
+  border-radius:var(--radius);
+  font-size:13px;
+  font-weight:700;
+  z-index:10000;
+  transform:translateY(80px);
+  opacity:0;
+  transition:all 0.3s;
+}
+
+.toast.show { transform:translateY(0); opacity:1; }
+
+/* ── SPINNER ── */
+.spin {
+  display:inline-block;
+  width:16px; height:16px;
+  border:2px solid rgba(255,255,255,0.2);
+  border-top-color:currentColor;
+  border-radius:50%;
+  animation:spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* ── DIVIDER ── */
+.divider {
+  border:none;
+  border-top:1px solid var(--border);
+  margin:20px 0;
+}
+
+/* ── LIBRARY SEARCH ── */
+.search-bar {
+  position:relative;
+  margin-bottom:16px;
+}
+
+.search-bar input {
+  padding-left:36px;
+}
+
+.search-icon {
+  position:absolute;
+  left:12px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--muted);
+  font-size:14px;
+  pointer-events:none;
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px) {
+  .shell { grid-template-columns:1fr; }
+  .sidebar { display:none; }
+  .main { padding:20px 16px; }
+  .form-row { grid-template-columns:1fr; }
+  .score-grid { grid-template-columns:1fr; }
+  .strategy-week { grid-template-columns:repeat(4,1fr); }
+}
+
+/* ── FADEUP ANIM ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(16px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.page.visible > * {
+  animation:fadeUp 0.4s ease both;
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-logo">
+      ⚡ Viral<span>Prompts</span>Pro
+      <span class="badge-pro">Membre</span>
+    </div>
+    <div class="topbar-right">
+      <div class="credits-pill">✦ <b id="creditsCount">∞</b> générations</div>
+      <div class="avatar">L</div>
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="nav-section">
+      <div class="nav-label">Principal</div>
+      <button class="nav-item active" onclick="showPage('dashboard', this)">
+        <span class="nav-icon">🏠</span> Dashboard
+      </button>
+      <button class="nav-item" onclick="showPage('script', this)">
+        <span class="nav-icon">🎬</span> Générateur Script
+        <span class="nav-badge">IA</span>
+      </button>
+      <button class="nav-item" onclick="showPage('hook', this)">
+        <span class="nav-icon">🎯</span> Analyseur Hook
+        <span class="nav-badge">IA</span>
+      </button>
+      <button class="nav-item" onclick="showPage('video', this)">
+        <span class="nav-icon">🤖</span> Prompts Vidéo IA
+        <span class="nav-badge">IA</span>
+      </button>
+      <button class="nav-item" onclick="showPage('thumbnail', this)">
+        <span class="nav-icon">🖼️</span> Concept Thumbnail
+        <span class="nav-badge">IA</span>
+      </button>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">Outils</div>
+      <button class="nav-item" onclick="showPage('strategy', this)">
+        <span class="nav-icon">📅</span> Stratégie Contenu
+        <span class="nav-badge">IA</span>
+      </button>
+      <button class="nav-item" onclick="showPage('library', this)">
+        <span class="nav-icon">📚</span> Bibliothèque
+      </button>
+      <button class="nav-item" onclick="showPage('trends', this)">
+        <span class="nav-icon">🔥</span> Tendances Niches
+        <span class="nav-badge">IA</span>
+      </button>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">Revente</div>
+      <button class="nav-item" onclick="showPage('resell', this)">
+        <span class="nav-icon">💰</span> Guide Revente
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- ══════════════════════════════════════════════════════════
+         PAGE: DASHBOARD
+    ══════════════════════════════════════════════════════════ -->
+    <div class="page visible" id="page-dashboard">
+      <div class="welcome-banner">
+        <div>
+          <h2>🔥 Bienvenue dans ton studio viral</h2>
+          <p>Toutes les armes pour faire exploser tes vidéos — propulsées par Claude IA.</p>
+        </div>
+        <div class="stat-pills">
+          <div class="stat-pill">
+            <div class="stat-pill-num">50</div>
+            <div class="stat-pill-label">Prompts</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-pill-num">7</div>
+            <div class="stat-pill-label">Outils IA</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-pill-num">∞</div>
+            <div class="stat-pill-label">Générations</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-header">
+        <h1>ACCÈS RAPIDE</h1>
+        <p>Clique sur un outil pour commencer</p>
+      </div>
+
+      <div class="quick-grid">
+        <div class="quick-card" onclick="showPage('script', document.querySelector('[onclick*=script]'))">
+          <div class="quick-card-icon">🎬</div>
+          <div class="quick-card-label">Script Viral</div>
+          <div class="quick-card-sub">TikTok · Reels · YT</div>
+        </div>
+        <div class="quick-card" onclick="showPage('hook', document.querySelector('[onclick*=hook]'))">
+          <div class="quick-card-icon">🎯</div>
+          <div class="quick-card-label">Analyser Hook</div>
+          <div class="quick-card-sub">Score + amélioration</div>
+        </div>
+        <div class="quick-card" onclick="showPage('video', document.querySelector('[onclick*=video]'))">
+          <div class="quick-card-icon">🤖</div>
+          <div class="quick-card-label">Prompt Vidéo IA</div>
+          <div class="quick-card-sub">Sora · Runway · Kling</div>
+        </div>
+        <div class="quick-card" onclick="showPage('thumbnail', document.querySelector('[onclick*=thumbnail]'))">
+          <div class="quick-card-icon">🖼️</div>
+          <div class="quick-card-label">Thumbnail</div>
+          <div class="quick-card-sub">Concept visuel</div>
+        </div>
+        <div class="quick-card" onclick="showPage('strategy', document.querySelector('[onclick*=strategy]'))">
+          <div class="quick-card-icon">📅</div>
+          <div class="quick-card-label">Stratégie</div>
+          <div class="quick-card-sub">Plan 7 jours</div>
+        </div>
+        <div class="quick-card" onclick="showPage('trends', document.querySelector('[onclick*=trends]'))">
+          <div class="quick-card-icon">🔥</div>
+          <div class="quick-card-label">Tendances</div>
+          <div class="quick-card-sub">Niches rentables</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="ct-icon">💡</span> Comment utiliser cet espace</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">
+          <div style="background:var(--surface2);padding:14px;border-radius:4px;border-left:3px solid var(--accent);">
+            <div style="font-weight:800;margin-bottom:4px;">1. Génère ton script</div>
+            <div style="color:var(--text);font-size:12px;">Choisis ta plateforme, ta niche, ton format — l'IA écrit tout.</div>
+          </div>
+          <div style="background:var(--surface2);padding:14px;border-radius:4px;border-left:3px solid var(--accent2);">
+            <div style="font-weight:800;margin-bottom:4px;">2. Analyse ton hook</div>
+            <div style="color:var(--text);font-size:12px;">Colle ton acccroche — l'IA te donne un score et l'améliore.</div>
+          </div>
+          <div style="background:var(--surface2);padding:14px;border-radius:4px;border-left:3px solid var(--green);">
+            <div style="font-weight:800;margin-bottom:4px;">3. Génère le visuel</div>
+            <div style="color:var(--text);font-size:12px;">Obtiens un prompt optimisé pour Sora, Runway ou Kling.</div>
+          </div>
+          <div style="background:var(--surface2);padding:14px;border-radius:4px;border-left:3px solid var(--blue);">
+            <div style="font-weight:800;margin-bottom:4px;">4. Planifie ta semaine</div>
+            <div style="color:var(--text);font-size:12px;">L'IA crée un plan de contenu complet sur 7 jours pour toi.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         PAGE: SCRIPT GENERATOR
+    ══════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-script">
+      <div class="page-header">
+        <h1>🎬 GÉNÉRATEUR DE SCRIPT VIRAL</h1>
+        <p>Crée un script prêt à tourner en quelques secondes — propulsé par Claude IA</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="ct-icon">⚙️</span> Paramètres <span class="ct-badge">IA LIVE</span></div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Plateforme</label>
+            <select id="s-platform">
+              <option value="TikTok">TikTok</option>
+              <option value="Instagram Reels">Instagram Reels</option>
+              <option value="YouTube Shorts">YouTube Shorts</option>
+              <option value="YouTube long format">YouTube long format</option>
+              <option value="Facebook Reels">Facebook Reels</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Format</label>
+            <select id="s-format">
+              <option value="Hook choc + révélation">Hook choc + révélation</option>
+              <option value="Storytelling émotionnel">Storytelling émotionnel</option>
+              <option value="POV viral">POV viral</option>
+              <option value="Did you know">Did you know</option>
+              <option value="Before/After transformation">Before/After transformation</option>
+              <option value="Controversy bait">Controversy bait</option>
+              <option value="Tutorial express">Tutorial express</option>
+              <option value="Day in my life">Day in my life</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Niche / Sujet</label>
+            <input id="s-niche" type="text" placeholder="ex: fitness, crypto, cuisine, gaming...">
+          </div>
+          <div class="form-group">
+            <label>Durée cible</label>
+            <select id="s-duration">
+              <option value="15-30 secondes">15–30 secondes</option>
+              <option value="30-60 secondes">30–60 secondes</option>
+              <option value="1-3 minutes">1–3 minutes</option>
+              <option value="5-10 minutes">5–10 minutes</option>
+              <option value="10-20 minutes">10–20 minutes</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Audience cible</label>
+            <input id="s-audience" type="text" placeholder="ex: 18-25 ans, entrepreneurs, mamans...">
+          </div>
+          <div class="form-group">
+            <label>Ton / Style</label>
+            <select id="s-tone">
+              <option value="percutant et direct">Percutant & direct</option>
+              <option value="émotionnel et inspirant">Émotionnel & inspirant</option>
+              <option value="humoristique et relatable">Humoristique & relatable</option>
+              <option value="éducatif et expert">Éducatif & expert</option>
+              <option value="mystérieux et intrigant">Mystérieux & intrigant</option>
+              <option value="controversé et provocateur">Controversé & provocateur</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Contexte / Détails supplémentaires (optionnel)</label>
+          <textarea id="s-context" placeholder="Décris ton produit, ton histoire, ton angle particulier..."></textarea>
+        </div>
+
+        <button class="btn btn-primary" id="s-btn" onclick="generateScript()">
+          <span>⚡ Générer le script</span>
+        </button>
+      </div>
+
+      <div class="card" id="s-output-card" style="display:none;">
+        <div class="card-title"><span class="ct-icon">📄</span> Script Généré</div>
+        <div class="output-box" id="s-output">
+          <div class="output-placeholder">Ton script apparaîtra ici...</div>
+        </div>
+        <div class="output-actions">
+          <button class="btn btn-secondary btn-sm" onclick="copyOutput('s-output')">📋 Copier</button>
+          <button class="btn btn-secondary btn-sm" onclick="generateScript()">🔄 Régénérer</button>
+          <button class="btn btn-yellow btn-sm" onclick="sendToHook()">🎯 Analyser le hook</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         PAGE: HOOK ANALYZER
+    ══════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-hook">
+      <div class="page-header">
+        <h1>🎯 ANALYSEUR DE HOOK</h1>
+        <p>Colle ton accroche — l'IA te donne un score et une version améliorée</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="ct-icon">🔍</span> Ton Hook <span class="ct-badge">IA LIVE</span></div>
+
+        <div class="form-group">
+          <label>Colle ton hook / accroche ici</label>
+          <textarea id="h-hook" rows="4" placeholder="ex: 'Tu gaspilles 3h par jour sans t'en rendre compte...' ou 'Ce que personne ne te dit sur le jeûne intermittent...'"></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Plateforme cible</label>
+            <select id="h-platform">
+              <option>TikTok</option>
+              <option>Instagram Reels</option>
+              <option>YouTube Shorts</option>
+              <option>YouTube</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Niche</label>
+            <input id="h-niche" type="text" placeholder="ex: fitness, finance, tech...">
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="h-btn" onclick="analyzeHook()">
+          <span>🎯 Analyser mon hook</span>
+        </button>
+      </div>
+
+      <div class="card" id="h-output-card" style="display:none;">
+        <div class="card-title"><span class="ct-icon">📊</span> Résultat de l'analyse</div>
+        <div class="score-grid" id="h-scores"></div>
+        <hr class="divider">
+        <div style="font-size:11px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Analyse détaillée + Hook amélioré</div>
+        <div class="output-box" id="h-output"></div>
+        <div class="output-actions">
+          <button class="btn btn-secondary btn-sm" onclick="copyOutput('h-output')">📋 Copier</button>
+          <button class="btn btn-secondary btn-sm" onclick="analyzeHook()">🔄 Réanalyser</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         PAGE: VIDEO PROMPTS
+    ══════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-video">
+      <div class="page-header">
+        <h1>🤖 GÉNÉRATEUR DE PROMPTS VIDÉO IA</h1>
+        <p>Prompts optimisés pour Sora, Runway ML, Kling AI et Pika</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="ct-icon">⚙️</span> Paramètres <span class="ct-badge">IA LIVE</span></div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Outil IA cible</label>
+            <select id="v-tool">
+              <option value="Sora (OpenAI)">Sora (OpenAI)</option>
+              <option value="Runway ML Gen-3">Runway ML Gen-3</option>
+              <option value="Kling AI">Kling AI</option>
+              <option value="Pika Labs">Pika Labs</option>
+              <option value="Luma Dream Machine">Luma Dream Machine</option>
+              <option value="Stable Video Diffusion">Stable Video Diffusion</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Type de vidéo</label>
+            <select id="v-type">
+              <option value="Cinématique atmosphérique">Cinématique atmosphérique</option>
+              <option value="Showcase produit">Showcase produit</option>
+              <option value="Nature & ambiance hypnotique">Nature & ambiance hypnotique</option>
+              <option value="Transition magique">Transition magique</option>
+              <option value="Portrait / Personnage">Portrait / Personnage</option>
+              <option value="Architecture & urbain">Architecture & urbain</option>
+              <option value="Macro ultra-détaillée">Macro ultra-détaillée</option>
+              <option value="Science-fiction">Science-fiction</option>
+              <option value="Lifestyle viral">Lifestyle viral</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Sujet principal</label>
+            <input id="v-subject" type="text" placeholder="ex: une forêt mystique, une montre de luxe, une mégapole...">
+          </div>
+          <div class="form-group">
+            <label>Durée souhaitée</label>
+            <select id="v-duration">
+              <option value="5-8 secondes loop">5–8 secondes (loop)</option>
+              <option value="10-15 secondes">10–15 secondes</option>
+              <option value="20-30 secondes">20–30 secondes</option>
+              <option value="60 secondes">60 secondes</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Ambiance / Mood</label>
+            <select id="v-mood">
+              <option value="Épique et dramatique">Épique & dramatique</option>
+              <option value="Serein et contemplatif">Serein & contemplatif</option>
+              <option value="Mystérieux et sombre">Mystérieux & sombre</option>
+              <option value="Luxueux et premium">Luxueux & premium</option>
+              <option value="Énergique et dynamique">Énergique & dynamique</option>
+              <option value="Hypnotique et méditatif">Hypnotique & méditatif</option>
+              <option value="Futuriste et tech">Futuriste & tech</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Style caméra</label>
+            <select id="v-camera">
+              <option value="Slow motion cinématique">Slow motion cinématique</option>
+              <option value="Drone aérien">Drone aérien</option>
+              <option value="Macro extrême">Macro extrême</option>
+              <option value="Timelapse / Hyperlapse">Timelapse / Hyperlapse</option>
+              <option value="Travelling avant">Travelling avant</option>
+              <option value="Plan fixe contemplatif">Plan fixe contemplatif</option>
+              <option value="Caméra portée dynamique">Caméra portée dynamique</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Détails supplémentaires (optionnel)</label>
+          <input id="v-details" type="text" placeholder="couleurs spécifiques, éléments à inclure, style artistique...">
+        </div>
+
+        <button class="btn btn-primary" id="v-btn" onclick="generateVideoPrompt()">
+          <span>🤖 Générer le prompt vidéo</span>
+        </button>
+      </div>
+
+      <div class="card" id="v-output-card" style="display:none;">
+        <div class="card-title"><span class="ct-icon">✨</span> Prompt Vidéo Généré</div>
+        <div class="output-box" id="v-output"></div>
+        <div class="output-actions">
+          <button class="btn btn-secondary btn-sm" onclick="copyOutput('v-output')">📋 Copier le prompt</button>
+          <button class="btn btn-secondary btn-sm" onclick="generateVideoPrompt()">🔄 Variation</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         PAGE: THUMBNAIL
+    ══════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-thumbnail">
+      <div class="page-header">
+        <h1>🖼️ CONCEPT THUMBNAIL</h1>
+        <p>Génère un brief visuel complet pour créer une thumbnail qui fait cliquer</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="ct-icon">🎨</span> Paramètres <span class="ct-badge">IA LIVE</span></div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Titre / Sujet de la vidéo</label>
+            <input id="t-title" type="text" placeholder="ex: J'ai testé le jeûne 72h et voilà ce qui s'est passé...">
+          </div>
+          <div class="form-group">
+            <label>Plateforme</label>
+            <select id="t-platform">
+              <option>YouTube</option>
+              <option>TikTok</option>
+              <option>Instagram</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Style visuel</label>
+            <select id="t-style">
+              <option value="Choc émotionnel (visage expressif)">Choc émotionnel (visage expressif)</option>
+              <option value="Minimaliste high-contrast">Minimaliste high-contrast</option>
+              <option value="Before/After split">Before/After split</option>
+              <option value="Flèche + texte percutant">Flèche + texte percutant</option>
+              <option value="Comparaison côte à côte">Comparaison côte à côte</option>
+              <option value="Mystère / curiosity gap">Mystère / curiosity gap</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Palette couleurs</label>
+            <select id="t-colors">
+              <option value="Rouge & noir (urgence)">Rouge & noir (urgence)</option>
+              <option value="Jaune & noir (alerte)">Jaune & noir (alerte)</option>
+              <option value="Bleu & blanc (confiance)">Bleu & blanc (confiance)</option>
+              <option value="Vert & noir (succès)">Vert & noir (succès)</option>
+              <option value="Orange & gris (énergie)">Orange & gris (énergie)</option>
+              <option value="Violet & or (luxe)">Violet & or (luxe)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Niche / Contexte</label>
+          <input id="t-niche" type="text" placeholder="ex: fitness, finance personnelle, voyage, gaming...">
+        </div>
+
+        <button class="btn btn-primary" id="t-btn" onclick="generateThumbnail()">
+          <span>🖼️ Générer le concept</span>
+        </button>
+      </div>
+
+      <div class="card" id="t-output-card" style="display:none;">
+        <div class="card-title"><span class="ct-icon">🎨</span> Brief Thumbnail Complet</div>
+        <div class="output-box" id="t-output"></div>
+        <div class="output-actions">
+          <button class="btn btn-secondary btn-sm" onclick="copyOutput('t-output')">📋 Copier</button>
+          <button class="btn btn-secondary btn-sm" onclick="generateThumbnail()">🔄 Autre concept</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         PAGE: STRATEGY
+    ══════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-strategy">
+      <div class="page-header">
+        <h1>📅 STRATÉGIE CONTENU 7 JOURS</h1>
+        <p>Un plan de publication complet et personnalisé pour exploser en une semaine</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="ct-icon">🗓️</span> Génère ton plan <span class="ct-badge">IA LIVE</span></div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Ta niche principale</label>
+            <input id="st-niche" type="text" placeholder="ex: fitness, dropshipping, cuisine, gaming...">
+          </div>
+          <div class="form-group">
+            <label>Plateforme principale</label>
+            <select id="st-platform">
+              <option>TikTok</option>
+              <option>Instagram</option>
+              <option>YouTube</option>
+              <option>Multi-plateformes</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Niveau actuel</label>
+            <select id="st-level">
+              <option value="débutant (0 à 1000 abonnés)">Débutant (0–1 000 abonnés)</option>
+              <option value="intermédiaire (1000 à 10000 abonnés)">Intermédiaire (1K–10K)</option>
+              <option value="avancé (10000+ abonnés)">Avancé (10K+)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Objectif</label>
+            <select id="st-goal">
+              <option value="gagner des abonnés rapidement">Gagner des abonnés</option>
+              <option value="monétiser son contenu">Monétiser son contenu</option>
+              <option value="vendre un produit ou service">Vendre un produit</option>
+              <option value="devenir viral">Devenir viral</option>
+              <option value="construire une communauté engagée">Construire une communauté</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Temps disponible par jour</label>
+          <select id="st-time">
+            <option value="30 minutes">30 minutes</option>
+            <option value="1 heure">1 heure</option>
+            <option value="2-3 heures">2–3 heures</option>
+            <option value="temps plein">Temps plein</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary" id="st-btn" onclick="generateStrategy()">
+          <span>📅 Générer mon plan 7 jours</span>
+        </button>
+      </div>
+
+      <div class="card" id="st-output-card" style="display:none;">
+        <div class="card-title"><span class="ct-icon">🗓️</span> Ton Plan de la Semaine</div>
+        <div class="output-box" id="st-output"></div>
+        <div class="output-actions">
+          <button class="btn btn-secondary btn-sm" onclick="copyOutput('st-output')">📋 Copier le plan</button>
+          <button class="btn btn-secondary btn-sm" onclick="generateStrategy()">🔄 Nouveau plan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         PAGE: LIBRARY
+    ══════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-library">
+      <div class="page-header">
+        <h1>📚 BIBLIOTHÈQUE DES 50 PROMPTS</h1>
+        <p>Tous tes prompts organisés, filtrables et copiables en un clic</p>
+      </div>
+
+      <div class="card">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Rechercher un prompt..." oninput="filterLibrary(this.value)" id="lib-search">
+        </div>
+        <div class="tag-row" id="lib-filters">
+          <span class="tag active-tag" onclick="filterByTag(this,'tous')">Tous</span>
+          <span class="tag" onclick="filterByTag(this,'tiktok')">TikTok</span>
+          <span class="tag" onclick="filterByTag(this,'vidéo ia')">Vidéo IA</span>
+          <span class="tag" onclick="filterByTag(this,'produit')">Produit</span>
+          <span class="tag" onclick="filterByTag(this,'story')">Storytelling</span>
+          <span class="tag" onclick="filterByTag(this,'youtube')">YouTube</span>
+          <span class="tag" onclick="filterByTag(this,'nature')">Nature</span>
+          <span class="tag" onclick="filterByTag(this,'éducatif')">Éducatif</span>
+        </div>
+        <div class="prompt-grid" id="lib-grid"></div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         PAGE: TRENDS
+    ══════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-trends">
+      <div class="page-header">
+        <h1>🔥 TENDANCES & NICHES</h1>
+        <p>Découvre les niches les plus rentables pour tes vidéos IA</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="ct-icon">🔍</span> Explorer une niche <span class="ct-badge">IA LIVE</span></div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Niche à analyser</label>
+            <input id="tr-niche" type="text" placeholder="ex: finance, fitness, IA, gaming, développement personnel...">
+          </div>
+          <div class="form-group">
+            <label>Plateforme</label>
+            <select id="tr-platform">
+              <option>TikTok</option>
+              <option>Instagram</option>
+              <option>YouTube</option>
+              <option>Toutes</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="tr-btn" onclick="analyzeTrend()">
+          <span>🔥 Analyser la niche</span>
+        </button>
+      </div>
+
+      <div class="card" id="tr-output-card" style="display:none;">
+        <div class="card-title"><span class="ct-icon">📈</span> Analyse de la niche</div>
+        <div class="output-box" id="tr-output"></div>
+        <div class="output-actions">
+          <button class="btn btn-secondary btn-sm" onclick="copyOutput('tr-output')">📋 Copier</button>
+          <button class="btn btn-secondary btn-sm" onclick="analyzeTrend()">🔄 Réanalyser</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         PAGE: RESELL
+    ══════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-resell">
+      <div class="page-header">
+        <h1>💰 GUIDE DE REVENTE</h1>
+        <p>Comment transformer ce pack en machine à cash</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="ct-icon">📋</span> Droits de Revente</div>
+        <div style="background:rgba(0,230,118,0.1);border:1px solid var(--green);padding:16px;border-radius:4px;margin-bottom:20px;">
+          <div style="color:var(--green);font-weight:800;margin-bottom:6px;">✅ TU AS LE DROIT DE :</div>
+          <div style="color:var(--text);font-size:13px;line-height:2;">
+            • Revendre ce pack tel quel et garder 100% des profits<br>
+            • Rebaptiser et personnaliser avec ton propre branding<br>
+            • Inclure dans un bundle avec d'autres produits<br>
+            • Donner accès à cette app à tes acheteurs<br>
+            • Utiliser les prompts dans tes services clients
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="ct-icon">🚀</span> Plan de lancement</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="background:var(--surface2);padding:14px;border-radius:4px;display:flex;gap:14px;align-items:flex-start;">
+            <div style="background:var(--accent);color:var(--white);font-family:var(--font-display);font-size:20px;padding:4px 10px;border-radius:2px;flex-shrink:0;">01</div>
+            <div><div style="font-weight:800;margin-bottom:3px;">Crée ton compte Gumroad</div><div style="color:var(--text);font-size:12px;">Gratuit, pas de frais fixes. Gumroad prend 10% seulement à la vente. Upload le PDF + lien vers cette app.</div></div>
+          </div>
+          <div style="background:var(--surface2);padding:14px;border-radius:4px;display:flex;gap:14px;align-items:flex-start;">
+            <div style="background:var(--accent2);color:#000;font-family:var(--font-display);font-size:20px;padding:4px 10px;border-radius:2px;flex-shrink:0;">02</div>
+            <div><div style="font-weight:800;margin-bottom:3px;">Génère une vidéo de démo</div><div style="color:var(--text);font-size:12px;">Utilise le générateur de script ici même. Tourne la vidéo. Poste sur TikTok/Reels. Lien Gumroad en bio. C'est ta pub gratuite.</div></div>
+          </div>
+          <div style="background:var(--surface2);padding:14px;border-radius:4px;display:flex;gap:14px;align-items:flex-start;">
+            <div style="background:var(--green);color:#000;font-family:var(--font-display);font-size:20px;padding:4px 10px;border-radius:2px;flex-shrink:0;">03</div>
+            <div><div style="font-weight:800;margin-bottom:3px;">Prix de lancement</div><div style="color:var(--text);font-size:12px;">Commence à 7,99€ pour les 10 premières ventes → monte à 9,99€ → puis 14,99€ après 50 ventes. La rareté pousse à l'achat.</div></div>
+          </div>
+          <div style="background:var(--surface2);padding:14px;border-radius:4px;display:flex;gap:14px;align-items:flex-start;">
+            <div style="background:var(--blue);color:var(--white);font-family:var(--font-display);font-size:20px;padding:4px 10px;border-radius:2px;flex-shrink:0;">04</div>
+            <div><div style="font-weight:800;margin-bottom:3px;">Scale avec Etsy</div><div style="color:var(--text);font-size:12px;">Etsy a un moteur de recherche. Les gens cherchent "prompt pack TikTok viral" — tu apparais sans payer de pub. Trafic gratuit.</div></div>
+          </div>
+          <div style="background:var(--surface2);padding:14px;border-radius:4px;display:flex;gap:14px;align-items:flex-start;">
+            <div style="background:var(--purple);color:var(--white);font-family:var(--font-display);font-size:20px;padding:4px 10px;border-radius:2px;flex-shrink:0;">05</div>
+            <div><div style="font-weight:800;margin-bottom:3px;">Crée un pack niche v2</div><div style="color:var(--text);font-size:12px;">Utilise le générateur de script pour créer 20 prompts spécifiques à une niche (fitness, finance, gaming). Nouveau produit = nouvelles ventes.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="ct-icon">📊</span> Projection des revenus</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;">
+          <div style="background:var(--surface2);padding:16px;text-align:center;border-radius:4px;border-top:2px solid var(--accent);">
+            <div style="font-family:var(--font-display);font-size:28px;color:var(--accent);">50€</div>
+            <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:4px;">5 ventes / semaine</div>
+          </div>
+          <div style="background:var(--surface2);padding:16px;text-align:center;border-radius:4px;border-top:2px solid var(--accent2);">
+            <div style="font-family:var(--font-display);font-size:28px;color:var(--accent2);">200€</div>
+            <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:4px;">20 ventes / semaine</div>
+          </div>
+          <div style="background:var(--surface2);padding:16px;text-align:center;border-radius:4px;border-top:2px solid var(--green);">
+            <div style="font-family:var(--font-display);font-size:28px;color:var(--green);">500€</div>
+            <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:4px;">50 ventes / semaine</div>
+          </div>
+          <div style="background:var(--surface2);padding:16px;text-align:center;border-radius:4px;border-top:2px solid var(--blue);">
+            <div style="font-family:var(--font-display);font-size:28px;color:var(--blue);">2000€</div>
+            <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:4px;">200 ventes / semaine</div>
+          </div>
+        </div>
+        <div style="color:var(--muted);font-size:11px;margin-top:12px;">* Basé sur 9,99€ / vente après commission Gumroad (10%)</div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════════
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('visible'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('visible');
+  if (btn) btn.classList.add('active');
+  if (id === 'library') renderLibrary();
+}
+
+// ══════════════════════════════════════════════════════════
+// API CALL — STREAMING
+// ══════════════════════════════════════════════════════════
+async function callClaude(systemPrompt, userPrompt, outputId, btnId, onDone) {
+  const outputEl = document.getElementById(outputId);
+  const btnEl = document.getElementById(btnId);
+
+  outputEl.innerHTML = '<div style="display:flex;align-items:center;gap:10px;color:var(--muted);"><div class="loading-dots"><span></span><span></span><span></span></div> Génération en cours...</div>';
+  if (btnEl) { btnEl.disabled = true; btnEl.innerHTML = '<div class="spin"></div> Génération...'; }
+
+  const outputCard = outputEl.closest('.card');
+  if (outputCard) { outputCard.style.display = 'block'; outputEl.classList.add('active'); }
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userPrompt }]
+      })
+    });
+
+    const data = await res.json();
+    const text = data.content?.[0]?.text || 'Erreur: pas de réponse.';
+    outputEl.classList.remove('active');
+    outputEl.classList.add('done');
+    outputEl.textContent = text;
+    if (onDone) onDone(text);
+    showToast('✅ Généré avec succès !');
+  } catch (e) {
+    outputEl.textContent = 'Erreur de connexion à l\'IA. Vérifie ta connexion.';
+  } finally {
+    if (btnEl) {
+      btnEl.disabled = false;
+      btnEl.innerHTML = getBtnLabel(btnId);
+    }
+  }
+}
+
+function getBtnLabel(id) {
+  const labels = {
+    's-btn': '⚡ Générer le script',
+    'h-btn': '🎯 Analyser mon hook',
+    'v-btn': '🤖 Générer le prompt vidéo',
+    't-btn': '🖼️ Générer le concept',
+    'st-btn': '📅 Générer mon plan 7 jours',
+    'tr-btn': '🔥 Analyser la niche'
+  };
+  return labels[id] || 'Générer';
+}
+
+// ══════════════════════════════════════════════════════════
+// SCRIPT GENERATOR
+// ══════════════════════════════════════════════════════════
+function generateScript() {
+  const platform = document.getElementById('s-platform').value;
+  const format = document.getElementById('s-format').value;
+  const niche = document.getElementById('s-niche').value || 'développement personnel';
+  const duration = document.getElementById('s-duration').value;
+  const audience = document.getElementById('s-audience').value || 'grand public';
+  const tone = document.getElementById('s-tone').value;
+  const context = document.getElementById('s-context').value;
+
+  const system = `Tu es un expert en création de contenu viral pour les réseaux sociaux. Tu as créé des centaines de scripts qui ont généré des millions de vues. Tu maîtrises parfaitement les mécaniques d'engagement de ${platform}. Réponds uniquement en français. Sois direct, percutant, pratique.`;
+
+  const user = `Crée un script ${format} pour ${platform} sur la niche "${niche}".
+
+Contraintes :
+- Durée : ${duration}
+- Audience cible : ${audience}
+- Ton : ${tone}
+${context ? `- Contexte : ${context}` : ''}
+
+Format de réponse :
+🎬 TITRE / CONCEPT : [titre accrocheur]
+⏱️ DURÉE ESTIMÉE : [durée]
+
+🔴 HOOK (0-3s) :
+[accroche explosive]
+
+📖 DÉVELOPPEMENT :
+[corps du script avec indications de visuels entre crochets]
+
+🎯 CALL TO ACTION :
+[CTA final]
+
+💡 NOTES DE RÉALISATION :
+[conseils rapides pour filmer / monter]`;
+
+  document.getElementById('s-output-card').style.display = 'block';
+  callClaude(system, user, 's-output', 's-btn');
+}
+
+function sendToHook() {
+  const scriptText = document.getElementById('s-output').textContent;
+  const hookMatch = scriptText.match(/HOOK[^:]*:\s*\n([^\n]+)/i);
+  if (hookMatch) {
+    document.getElementById('h-hook').value = hookMatch[1].trim();
+  }
+  showPage('hook', document.querySelector('[onclick*="hook"]'));
+}
+
+// ══════════════════════════════════════════════════════════
+// HOOK ANALYZER
+// ══════════════════════════════════════════════════════════
+function analyzeHook() {
+  const hook = document.getElementById('h-hook').value;
+  if (!hook.trim()) { showToast('⚠️ Écris un hook à analyser !'); return; }
+
+  const platform = document.getElementById('h-platform').value;
+  const niche = document.getElementById('h-niche').value || 'générale';
+
+  const system = `Tu es un expert en psychologie virale et en analyse de contenu pour les réseaux sociaux. Tu analyses des hooks avec une précision scientifique. Réponds en français. Sois direct et actionnable.`;
+
+  const user = `Analyse ce hook pour ${platform} dans la niche "${niche}" :
+
+"${hook}"
+
+Réponds EXACTEMENT dans ce format :
+
+📊 SCORES (sur 10) :
+• Pouvoir d'arrêt : X/10
+• Curiosité créée : X/10
+• Clarté du message : X/10
+• Pertinence audience : X/10
+• Score global : X/10
+
+🔍 ANALYSE :
+[2-3 phrases sur pourquoi ça marche ou pas]
+
+⚠️ PROBLÈMES IDENTIFIÉS :
+[liste des faiblesses]
+
+✅ 3 VERSIONS AMÉLIORÉES :
+Version 1 (plus choc) : "..."
+Version 2 (plus curiosité) : "..."
+Version 3 (plus relatable) : "..."
+
+💡 CONSEIL CLÉ :
+[1 conseil pratique]`;
+
+  document.getElementById('h-output-card').style.display = 'block';
+  callClaude(system, user, 'h-output', 'h-btn', (text) => {
+    // Parse scores and show visual meters
+    const scoreMatch = text.match(/Score global\s*:\s*(\d+)\/10/i);
+    const stopMatch = text.match(/arrêt\s*:\s*(\d+)\/10/i);
+    const curioMatch = text.match(/[Cc]uriosit[eé]\s*:\s*(\d+)\/10/i);
+    const clartMatch = text.match(/[Cc]lart[eé]\s*:\s*(\d+)\/10/i);
+
+    const scores = [
+      { label: 'Score global', val: scoreMatch?.[1] || '?', color: '#ff3c00' },
+      { label: 'Pouvoir d\'arrêt', val: stopMatch?.[1] || '?', color: '#ffcc00' },
+      { label: 'Curiosité', val: curioMatch?.[1] || '?', color: '#00e676' },
+      { label: 'Clarté', val: clartMatch?.[1] || '?', color: '#2979ff' },
+    ];
+
+    document.getElementById('h-scores').innerHTML = scores.map(s => `
+      <div class="score-item">
+        <div class="score-item-label">${s.label}</div>
+        <div class="score-item-val" style="color:${s.color}">${s.val}<span style="font-size:16px;color:var(--muted)">/10</span></div>
+      </div>
+    `).join('');
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+// VIDEO PROMPT GENERATOR
+// ══════════════════════════════════════════════════════════
+function generateVideoPrompt() {
+  const tool = document.getElementById('v-tool').value;
+  const type = document.getElementById('v-type').value;
+  const subject = document.getElementById('v-subject').value || 'une scène mystérieuse';
+  const duration = document.getElementById('v-duration').value;
+  const mood = document.getElementById('v-mood').value;
+  const camera = document.getElementById('v-camera').value;
+  const details = document.getElementById('v-details').value;
+
+  const system = `Tu es un expert en génération de vidéos IA. Tu maîtrises parfaitement les syntaxes de prompt pour ${tool}. Tu sais exactement quels mots-clés maximisent la qualité visuelle. Réponds en anglais pour les prompts (c'est la langue des outils IA) mais avec des explications en français.`;
+
+  const user = `Génère un prompt optimisé pour ${tool} avec ces paramètres :
+- Type : ${type}
+- Sujet : ${subject}
+- Durée : ${duration}
+- Mood : ${mood}
+- Caméra : ${camera}
+${details ? `- Détails : ${details}` : ''}
+
+Format de réponse :
+
+🤖 PROMPT PRINCIPAL (à copier-coller dans ${tool}) :
+[prompt complet en anglais, ultra-détaillé, optimisé pour ${tool}]
+
+🔄 PROMPT VARIATION (style différent) :
+[variation avec angle différent]
+
+⚙️ PARAMÈTRES RECOMMANDÉS :
+[paramètres spécifiques à ${tool} : seed, steps, CFG, etc.]
+
+💡 ASTUCE :
+[1 conseil pour maximiser la qualité sur ${tool}]`;
+
+  document.getElementById('v-output-card').style.display = 'block';
+  callClaude(system, user, 'v-output', 'v-btn');
+}
+
+// ══════════════════════════════════════════════════════════
+// THUMBNAIL GENERATOR
+// ══════════════════════════════════════════════════════════
+function generateThumbnail() {
+  const title = document.getElementById('t-title').value || 'Ma vidéo virale';
+  const platform = document.getElementById('t-platform').value;
+  const style = document.getElementById('t-style').value;
+  const colors = document.getElementById('t-colors').value;
+  const niche = document.getElementById('t-niche').value || 'générale';
+
+  const system = `Tu es un expert en design de thumbnails virales. Tu as analysé des milliers de thumbnails YouTube et TikTok qui ont fait des millions de vues. Tu sais exactement ce qui fait cliquer. Réponds en français.`;
+
+  const user = `Génère un brief complet de thumbnail pour :
+- Titre : "${title}"
+- Plateforme : ${platform}
+- Style : ${style}
+- Couleurs : ${colors}
+- Niche : ${niche}
+
+Format de réponse :
+
+🖼️ CONCEPT VISUEL :
+[Description précise de la composition]
+
+📝 TEXTE À AFFICHER :
+• Titre principal : "..." (police recommandée, taille, couleur)
+• Sous-titre/texte secondaire : "..." (si pertinent)
+
+👤 ÉLÉMENT VISUEL PRINCIPAL :
+[Ce qu'on doit voir : photo, icône, objet, personne - avec description précise]
+
+🎨 PALETTE EXACTE :
+• Fond : [couleur hex ou description]
+• Texte principal : [couleur hex]
+• Accent/flèche : [couleur hex]
+
+💡 EFFET PSYCHOLOGIQUE :
+[Pourquoi cette thumbnail va faire cliquer]
+
+📱 PROMPT MIDJOURNEY/DALL-E :
+[Prompt pour générer le visuel background de la thumbnail]`;
+
+  document.getElementById('t-output-card').style.display = 'block';
+  callClaude(system, user, 't-output', 't-btn');
+}
+
+// ══════════════════════════════════════════════════════════
+// STRATEGY GENERATOR
+// ══════════════════════════════════════════════════════════
+function generateStrategy() {
+  const niche = document.getElementById('st-niche').value || 'développement personnel';
+  const platform = document.getElementById('st-platform').value;
+  const level = document.getElementById('st-level').value;
+  const goal = document.getElementById('st-goal').value;
+  const time = document.getElementById('st-time').value;
+
+  const system = `Tu es un expert en stratégie de contenu pour les réseaux sociaux. Tu as aidé des centaines de créateurs à passer de 0 à viral. Tu donnes des plans concrets, actionnables, avec des idées de vidéos spécifiques. Réponds en français.`;
+
+  const user = `Crée un plan de contenu sur 7 jours pour :
+- Niche : ${niche}
+- Plateforme : ${platform}
+- Niveau : ${level}
+- Objectif : ${goal}
+- Temps dispo : ${time} par jour
+
+Format :
+
+🎯 STRATÉGIE GLOBALE :
+[2-3 phrases sur l'approche]
+
+📅 PLAN JOUR PAR JOUR :
+
+LUNDI — [thème] :
+• Idée de vidéo : "..."
+• Format : [format]
+• Hook suggéré : "..."
+• Temps de production : [durée]
+
+MARDI — [thème] :
+[idem]
+
+[Continuer jusqu'au DIMANCHE]
+
+🔑 3 RÈGLES D'OR pour cette semaine :
+1. ...
+2. ...
+3. ...
+
+📈 INDICATEURS À SURVEILLER :
+[KPIs pertinents pour l'objectif]`;
+
+  document.getElementById('st-output-card').style.display = 'block';
+  callClaude(system, user, 'st-output', 'st-btn');
+}
+
+// ══════════════════════════════════════════════════════════
+// TREND ANALYZER
+// ══════════════════════════════════════════════════════════
+function analyzeTrend() {
+  const niche = document.getElementById('tr-niche').value || 'développement personnel';
+  const platform = document.getElementById('tr-platform').value;
+
+  const system = `Tu es un expert en tendances des réseaux sociaux et en marketing de contenu. Tu analyses les niches avec précision et donnes des insights actionnables. Réponds en français.`;
+
+  const user = `Analyse la niche "${niche}" sur ${platform} en 2025.
+
+Format :
+
+📊 ÉTAT DE LA NICHE :
+• Niveau de saturation : [faible / moyen / élevé]
+• Potentiel de croissance : [X/10]
+• Facilité d'entrée : [X/10]
+• Monétisation potentielle : [X/10]
+
+🔥 5 ANGLES VIRAUX EN CE MOMENT :
+1. "..." — [pourquoi ça marche]
+2. "..." — [pourquoi ça marche]
+3. "..." — [pourquoi ça marche]
+4. "..." — [pourquoi ça marche]
+5. "..." — [pourquoi ça marche]
+
+💰 MODÈLES DE MONÉTISATION :
+[Top 3 façons de gagner de l'argent dans cette niche]
+
+🎯 PROFIL DU CRÉATEUR QUI GAGNE :
+[Description du type de contenu qui performe]
+
+⚡ 3 IDÉES DE VIDÉOS À FAIRE CETTE SEMAINE :
+1. ...
+2. ...
+3. ...
+
+⚠️ ERREURS À ÉVITER :
+[Top 3 erreurs des débutants dans cette niche]`;
+
+  document.getElementById('tr-output-card').style.display = 'block';
+  callClaude(system, user, 'tr-output', 'tr-btn');
+}
+
+// ══════════════════════════════════════════════════════════
+// LIBRARY
+// ══════════════════════════════════════════════════════════
+const PROMPTS = [
+  { tag:'tiktok', color:'#ff3c00', title:'Hook Choc 2s', text:'Create a 30-second viral TikTok script about [topic]. Open with a shocking statement in the first 2 seconds that forces the viewer to stop scrolling. Build tension throughout then deliver a satisfying payoff. Include visual cues and text overlay suggestions.' },
+  { tag:'tiktok', color:'#ff3c00', title:'Hook Question', text:'Write a TikTok script for [niche] that opens with a controversial question. The viewer must feel personally called out. Add timestamps, visual cues, and a save-worthy tip at the end.' },
+  { tag:'tiktok', color:'#ff3c00', title:'Before/After', text:'Generate a 45-second transformation script for [product/skill]. Show the painful before state in detail, then the dramatic after. Make the contrast impossible to ignore.' },
+  { tag:'tiktok', color:'#ff3c00', title:'POV Viral', text:'Write a POV-style TikTok script: POV you just discovered [secret/hack]. Make the viewer feel like an insider. Use informal language, fast cuts, and end with a surprising twist.' },
+  { tag:'tiktok', color:'#ff3c00', title:'Storytelling Arc', text:'Create a 60-second emotional short script: relatable problem, escalating struggle, unexpected twist, inspiring resolution. Target audience: [age/interest]. Include music mood suggestions.' },
+  { tag:'tiktok', color:'#ff3c00', title:'Did You Know', text:'Write a "Did you know?" TikTok script about [niche topic]. Make it feel like a forbidden secret. Structure: shocking fact → proof → implication for viewer → call-to-action to follow.' },
+  { tag:'tiktok', color:'#ff3c00', title:'Reaction Bait', text:'Script a TikTok that makes viewers comment their answer. Ask a polarizing question on [topic]. Give 2 sides. End with which side you\'re on and ask viewers to comment A or B.' },
+  { tag:'tiktok', color:'#ff3c00', title:'Confession Trend', text:'Write a TikTok using the confession trend: "I need to be honest about [topic]..." Open with vulnerability, build to a surprising revelation, end with a relatable lesson. 30 seconds.' },
+  { tag:'vidéo ia', color:'#9c27b0', title:'Cinématique 4K', text:'Cinematic 4K video, golden hour lighting, slow motion close-up of [subject], shallow depth of field, ultra-realistic textures, emotional atmosphere, no text overlay, 10 second seamless loop, photorealistic.' },
+  { tag:'vidéo ia', color:'#9c27b0', title:'Ambiance Nuit', text:'Aerial drone footage over [city] at night, neon reflections on wet streets, bokeh city lights, smooth cinematic movement, moody color grade deep teal and amber, 15 seconds, 4K.' },
+  { tag:'vidéo ia', color:'#9c27b0', title:'Transition Magique', text:'Seamless morph transition: [object A] transforming into [object B], fluid particle effect, glowing edges, ethereal atmosphere, 4K ultra-realistic, 6 seconds loopable, cinematic quality.' },
+  { tag:'vidéo ia', color:'#9c27b0', title:'Hyperlapse Urbain', text:'Hyperlapse of [city landmark], sunrise to sunset time compression, dramatic cloud movement, dynamic camera rotation, cinematic color grade, 12 seconds, 4K.' },
+  { tag:'vidéo ia', color:'#9c27b0', title:'Macro Extrême', text:'Extreme macro video of [texture/object], ultra sharp detail, water droplets, satisfying slow motion, clinical white background, 4K resolution, 8 second loop, studio quality.' },
+  { tag:'vidéo ia', color:'#9c27b0', title:'Forêt Mystique', text:'Misty forest at dawn, sunrays filtering through ancient trees, slow camera drift forward, birds starting to sing, 4K ultra-realistic, 15 second seamless loop, serene mystical atmosphere.' },
+  { tag:'vidéo ia', color:'#9c27b0', title:'Tempête Épique', text:'Dramatic storm approaching over open ocean, lightning in the distance, time-lapse cloud movement, cinematic wide angle, color grade deep teal and amber, 10 seconds, 4K.' },
+  { tag:'produit', color:'#ffcc00', title:'Luxe 360°', text:'Product showcase video of [product], minimalist white background, satisfying 360 degree rotation, soft diffused studio lighting, luxury feel, 8 seconds, pristine quality, no text.' },
+  { tag:'produit', color:'#ffcc00', title:'Unboxing ASMR', text:'ASMR-style unboxing of [product], close-up on packaging details, satisfying sounds, slow reveal, warm lighting, premium feel, 20 seconds, no voiceover, luxury brand aesthetic.' },
+  { tag:'produit', color:'#ffcc00', title:'Before/After Produit', text:'Side by side comparison: using [product] vs not using it. Show dramatic difference. Clean split screen, upbeat music cue, text overlay results. 15 seconds, high contrast.' },
+  { tag:'produit', color:'#ffcc00', title:'Lifestyle Integration', text:'Lifestyle video showing [product] naturally in a beautiful morning routine. Real home setting, golden hour window light, aspirational but relatable. 30 seconds, warm tones.' },
+  { tag:'produit', color:'#ffcc00', title:'Hero Shot Premium', text:'Hero shot product video: [product] floating in mid-air, dramatic lighting, rotating slowly, particles of light around it, black background, 4K, 10 seconds, luxury commercial feel.' },
+  { tag:'story', color:'#00e676', title:'Redemption Arc', text:'Write a 60-second emotional video script: start at rock bottom with [topic], show the turning point, end at triumph. Make the viewer feel the journey viscerally. Include emotional beats.' },
+  { tag:'story', color:'#00e676', title:'Underdog Story', text:'Create a short-form underdog story about [person/brand/idea]. Establish obstacles, show grit, deliver victory. Target emotion: inspired determination. 45 seconds. Very relatable.' },
+  { tag:'story', color:'#00e676', title:'Le Moment Pivot', text:'Generate a pivot moment story: everything was going wrong until [discovery/decision changed everything]. Structure for maximum emotional impact. End with CTA. 50 seconds.' },
+  { tag:'story', color:'#00e676', title:'Confession Vulnerable', text:'Script a vulnerable confession for [creator niche]: creator admits a mistake or failure, shows what they learned, connects to viewer\'s own struggles. Authentic tone. 45 seconds.' },
+  { tag:'story', color:'#00e676', title:'Lettre au passé', text:'Write a script: "[Creator] writes a letter to their past self about [struggle]". Emotional, relatable, ends with hope. Add visual suggestions. 60 seconds. Very shareable format.' },
+  { tag:'youtube', color:'#2979ff', title:'Thumbnail + Script', text:'Create a YouTube video script and thumbnail concept for "[catchy title]". Thumbnail: bold contrast, surprised face, max 5 words. Script opens by destroying a common false assumption.' },
+  { tag:'youtube', color:'#2979ff', title:'Listicle Viral', text:'Write a YouTube script for "Top [N] [things] that [shocking claim]". Each point: hook, proof, surprise element. Runtime: 8-12 minutes. Include timestamps for chapters.' },
+  { tag:'youtube', color:'#2979ff', title:'Deep Dive Mystère', text:'Script a YouTube deep-dive into [mysterious topic]. Structure: hook with unanswered question, context, key evidence, shocking twist, resolution. Runtime: 10 minutes.' },
+  { tag:'youtube', color:'#2979ff', title:'Réaction + Opinion', text:'Script a reaction/opinion video on [trending topic]. Structure: setup the drama, give hot take, back it up with evidence, open floor to comments. Controversial but fair. 8 minutes.' },
+  { tag:'nature', color:'#0284c7', title:'Ocean Hypno', text:'Extreme close-up of ocean waves breaking on black volcanic rock, slow motion spray, turquoise water clarity, golden reflections, 12 second seamless loop, 4K ultra-realistic.' },
+  { tag:'éducatif', color:'#f59e0b', title:'3 Tips Express', text:'Write a 45-second "3 tips on [topic] you wish you knew earlier" TikTok script. Each tip: 1 sentence max, visually demonstrable, immediately actionable. Fast-paced, high energy.' },
+  { tag:'éducatif', color:'#f59e0b', title:'Myth Busting', text:'Script a myth-busting video about [topic]. Structure: state the popular myth, pause for effect, destroy it with a surprising fact, give the truth. 30 seconds. Very shareable.' },
+];
+
+let currentTag = 'tous';
+let currentSearch = '';
+
+function renderLibrary() {
+  const grid = document.getElementById('lib-grid');
+  const filtered = PROMPTS.filter(p => {
+    const matchTag = currentTag === 'tous' || p.tag === currentTag;
+    const matchSearch = !currentSearch || p.title.toLowerCase().includes(currentSearch) || p.text.toLowerCase().includes(currentSearch);
+    return matchTag && matchSearch;
+  });
+
+  grid.innerHTML = filtered.map((p, i) => `
+    <div class="prompt-card">
+      <span class="prompt-card-tag" style="background:${p.color}22;color:${p.color}">${p.tag.toUpperCase()}</span>
+      <div class="prompt-card-title">${p.title}</div>
+      <div class="prompt-card-text">${p.text}</div>
+      <button class="prompt-card-copy" onclick="copyText(\`${p.text.replace(/`/g,"'")}\`)" title="Copier">📋</button>
+    </div>
+  `).join('');
+}
+
+function filterByTag(el, tag) {
+  document.querySelectorAll('#lib-filters .tag').forEach(t => t.classList.remove('active-tag'));
+  el.classList.add('active-tag');
+  currentTag = tag;
+  renderLibrary();
+}
+
+function filterLibrary(val) {
+  currentSearch = val.toLowerCase();
+  renderLibrary();
+}
+
+// ══════════════════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════════════════
+function copyOutput(id) {
+  const text = document.getElementById(id).textContent;
+  copyText(text);
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => showToast('📋 Copié !'));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>

@@ -949,6 +949,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
     <header class="topbar">
       <div class="topbar-logo" onclick="showPage('dashboard', document.querySelector('.nav-item'))" style="cursor:pointer;">⚡ Viral<span>Prompts</span>Pro <span class="badge-pro">Membre</span></div>
       <div class="topbar-right">
+        <button id="theme-btn" onclick="toggleTheme()" style="background:none;border:1px solid var(--border);color:var(--white);width:34px;height:34px;border-radius:4px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;">🌙</button>
         <div class="user-pill">👤 <span id="user-display">Membre</span></div>
         <button class="logout-btn" onclick="handleLogout()">Déconnexion</button>
       </div>
@@ -965,8 +966,8 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
       <button class="nav-item" onclick="showPage('strategy',this)"><span class="nav-icon">📅</span>Stratégie 7j<span class="nav-badge">IA</span></button>
       <button class="nav-item" onclick="showPage('trends',this)"><span class="nav-icon">🔥</span>Tendances<span class="nav-badge">IA</span></button>
       <button class="nav-item" onclick="showPage('library',this)"><span class="nav-icon">📚</span>Bibliothèque</button>
-      <div class="nav-label">Revente</div>
-      <button class="nav-item" onclick="showPage('resell',this)"><span class="nav-icon">💰</span>Guide Revente</button>
+      <div class="nav-label">Historique</div>
+      <button class="nav-item" onclick="showPage('history',this)"><span class="nav-icon">🕐</span>Mes générations</button>
     </nav>
 
     <main class="main">
@@ -1186,24 +1187,12 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
       </div>
 
       <!-- RESELL -->
-      <div class="page" id="page-resell">
+      <!-- HISTORY -->
+      <div class="page" id="page-history">
         <button class="back-btn" onclick="showPage('dashboard',document.querySelector('.nav-item'))">← Dashboard</button>
-        <div class="page-header"><h1>💰 GUIDE REVENTE</h1><p>Transforme ce pack en machine à cash</p></div>
+        <div class="page-header"><h1>🕐 MES GÉNÉRATIONS</h1><p>Tes 10 dernières générations IA sauvegardées</p></div>
         <div class="card">
-          <div class="card-title">📋 Tes droits</div>
-          <div style="background:rgba(0,230,118,0.08);border:1px solid var(--green);padding:14px;border-radius:4px;margin-bottom:16px;">
-            <div style="color:var(--green);font-weight:800;margin-bottom:8px;">✅ Tu peux :</div>
-            <div style="color:var(--text);font-size:13px;line-height:2.2;">• Revendre l'accès à cette app et garder 100% des profits<br>• La rebaptiser avec ton propre branding<br>• L'inclure dans un bundle de services<br>• Créer tes propres codes d'accès pour tes acheteurs<br>• Utiliser les outils IA pour tes clients</div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title">🚀 Plan de lancement</div>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <div style="background:var(--surface2);padding:14px;border-radius:4px;display:flex;gap:12px;align-items:flex-start;"><div style="background:var(--accent);color:var(--white);font-family:'Bebas Neue';font-size:18px;padding:3px 10px;border-radius:2px;flex-shrink:0;">01</div><div><div style="font-weight:800;margin-bottom:2px;">Gumroad gratuit</div><div style="color:var(--text);font-size:12px;">10% seulement à la vente. Upload le PDF + lien vers cette app.</div></div></div>
-            <div style="background:var(--surface2);padding:14px;border-radius:4px;display:flex;gap:12px;align-items:flex-start;"><div style="background:var(--accent2);color:#000;font-family:'Bebas Neue';font-size:18px;padding:3px 10px;border-radius:2px;flex-shrink:0;">02</div><div><div style="font-weight:800;margin-bottom:2px;">Démo TikTok</div><div style="color:var(--text);font-size:12px;">Génère un script ici, tourne la vidéo, poste. Lien en bio. C'est ta pub gratuite.</div></div></div>
-            <div style="background:var(--surface2);padding:14px;border-radius:4px;display:flex;gap:12px;align-items:flex-start;"><div style="background:var(--green);color:#000;font-family:'Bebas Neue';font-size:18px;padding:3px 10px;border-radius:2px;flex-shrink:0;">03</div><div><div style="font-weight:800;margin-bottom:2px;">Prix progressif</div><div style="color:var(--text);font-size:12px;">7,99€ (10 premières ventes) → 9,99€ → 14,99€ après 50 ventes.</div></div></div>
-            <div style="background:var(--surface2);padding:14px;border-radius:4px;display:flex;gap:12px;align-items:flex-start;"><div style="background:#2979ff;color:var(--white);font-family:'Bebas Neue';font-size:18px;padding:3px 10px;border-radius:2px;flex-shrink:0;">04</div><div><div style="font-weight:800;margin-bottom:2px;">Etsy = trafic gratuit</div><div style="color:var(--text);font-size:12px;">Les gens cherchent "prompt pack TikTok" — tu apparais sans payer de pub.</div></div></div>
-          </div>
+          <div id="history-list"><div style="color:var(--muted);font-size:13px;text-align:center;padding:20px;">Aucune génération pour l'instant</div></div>
         </div>
       </div>
 
@@ -1339,11 +1328,7 @@ const ADMIN_PASSWORD = 'admin2025vpp';
 // Format : 'VPP-XXXXXX',
 // ══════════════════════════════════════════════════════════
 const STATIC_CODES = [
-  'VPP-DSZUFQ',
-  'VPP-YAAUNT',
-  'VPP-C47TX4',
-  'VPP-KC9K6P',
-  'VPP-RK7JS3',
+  // 'VPP-EXEMPLE',  // remplace par tes vrais codes
 ];
 
 function loadStaticCodes() {
@@ -1518,6 +1503,7 @@ function enterApp() {
   document.getElementById('user-display').textContent = session.name || 'Membre';
   renderLibrary();
   showScreen('app');
+  setTimeout(showOnboarding, 600);
 }
 
 // ══════════════════════════════════════════════════════════
@@ -1541,6 +1527,7 @@ function showPage(id, btn) {
   document.getElementById('page-' + id).classList.add('visible');
   if (btn) btn.classList.add('active');
   if (id === 'library') renderLibrary();
+  if (id === 'history') renderHistory();
 }
 
 function getNav(id) {
@@ -1896,6 +1883,144 @@ function togglePass(inputId, btn) {
     btn.textContent = '👁️';
   }
 }
+
+// ══════════════════════════════════════════════════════════
+// HISTORIQUE DES GÉNÉRATIONS
+// ══════════════════════════════════════════════════════════
+const HISTORY_KEY = 'vpp_history';
+
+function saveToHistory(type, content) {
+  if (!content || content.length < 20) return;
+  const history = getList(HISTORY_KEY);
+  history.unshift({
+    type,
+    content: content.slice(0, 500),
+    date: new Date().toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' })
+  });
+  setData(HISTORY_KEY, history.slice(0, 10)); // garde les 10 derniers
+  renderHistory();
+}
+
+function renderHistory() {
+  const el = document.getElementById('history-list');
+  if (!el) return;
+  const history = getList(HISTORY_KEY);
+  if (history.length === 0) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px;">Aucune génération pour l\'instant</div>';
+    return;
+  }
+  el.innerHTML = history.map((h, i) => `
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:14px;margin-bottom:8px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <span style="background:var(--accent);color:var(--white);font-size:9px;font-weight:800;padding:2px 8px;border-radius:2px;letter-spacing:0.1em;">${h.type.toUpperCase()}</span>
+        <span style="font-size:11px;color:var(--muted);">${h.date}</span>
+      </div>
+      <div style="font-size:12px;color:var(--text);line-height:1.6;white-space:pre-wrap;">${h.content.slice(0, 200)}${h.content.length > 200 ? '...' : ''}</div>
+      <button class="app-btn app-btn-secondary app-btn-sm" style="margin-top:10px;" onclick="copyText(\`${h.content.replace(/`/g,"'")}\`)">📋 Copier</button>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════════════════
+// DARK / LIGHT MODE
+// ══════════════════════════════════════════════════════════
+function toggleTheme() {
+  const root = document.documentElement;
+  const isDark = root.getAttribute('data-theme') !== 'light';
+  if (isDark) {
+    root.setAttribute('data-theme', 'light');
+    root.style.setProperty('--bg', '#f5f5f0');
+    root.style.setProperty('--surface', '#ffffff');
+    root.style.setProperty('--surface2', '#f0ede6');
+    root.style.setProperty('--border', '#e0ddd6');
+    root.style.setProperty('--white', '#1a1a1a');
+    root.style.setProperty('--text', '#444');
+    root.style.setProperty('--muted', '#999');
+    document.getElementById('theme-btn').textContent = '☀️';
+    localStorage.setItem('vpp_theme', 'light');
+  } else {
+    root.removeAttribute('data-theme');
+    root.style.setProperty('--bg', '#070707');
+    root.style.setProperty('--surface', '#111');
+    root.style.setProperty('--surface2', '#1a1a1a');
+    root.style.setProperty('--border', '#222');
+    root.style.setProperty('--white', '#f0ede6');
+    root.style.setProperty('--text', '#c8c4bc');
+    root.style.setProperty('--muted', '#555');
+    document.getElementById('theme-btn').textContent = '🌙';
+    localStorage.setItem('vpp_theme', 'dark');
+  }
+}
+
+function loadTheme() {
+  if (localStorage.getItem('vpp_theme') === 'light') toggleTheme();
+}
+
+// ══════════════════════════════════════════════════════════
+// ONBOARDING
+// ══════════════════════════════════════════════════════════
+function showOnboarding() {
+  if (localStorage.getItem('vpp_onboarded')) return;
+  const overlay = document.getElementById('onboarding-overlay');
+  if (overlay) overlay.style.display = 'flex';
+}
+
+function nextStep(current, next) {
+  document.getElementById('step-' + current).style.display = 'none';
+  if (next) {
+    document.getElementById('step-' + next).style.display = 'block';
+  } else {
+    document.getElementById('onboarding-overlay').style.display = 'none';
+    localStorage.setItem('vpp_onboarded', '1');
+  }
+}
+
+// Patch callClaude pour sauvegarder l'historique
+const _origCallClaude = callClaude;
+async function callClaude(system, user, outputId, btnId, onDone) {
+  await _origCallClaude(system, user, outputId, btnId, (text) => {
+    if (onDone) onDone(text);
+    const typeMap = { 's-output':'Script', 'h-output':'Hook', 'v-output':'Vidéo IA', 't-output':'Thumbnail', 'st-output':'Stratégie', 'tr-output':'Tendances' };
+    saveToHistory(typeMap[outputId] || 'Génération', text);
+  });
+}
+
+loadTheme();
 </script>
+
+<!-- ONBOARDING OVERLAY -->
+<div id="onboarding-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:99999;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:36px;max-width:420px;width:100%;text-align:center;">
+
+    <div id="step-1">
+      <div style="font-size:48px;margin-bottom:16px;">🎉</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;margin-bottom:10px;letter-spacing:0.04em;">Bienvenue !</div>
+      <p style="color:var(--text);font-size:14px;line-height:1.7;margin-bottom:24px;">Tu as accès à <strong style="color:var(--white);">7 outils IA</strong> pour créer des vidéos virales. Laisse-moi te montrer comment démarrer en 3 étapes.</p>
+      <button class="app-btn app-btn-primary" style="width:100%;" onclick="nextStep(1,2)">Commencer le guide →</button>
+    </div>
+
+    <div id="step-2" style="display:none;">
+      <div style="font-size:48px;margin-bottom:16px;">🎬</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;margin-bottom:10px;letter-spacing:0.04em;">Étape 1 — Script</div>
+      <p style="color:var(--text);font-size:14px;line-height:1.7;margin-bottom:24px;">Va dans <strong style="color:var(--accent);">Script Viral</strong> dans la sidebar. Remplis ta niche, choisis ton format, et clique sur Générer. L'IA écrit tout en 10 secondes.</p>
+      <button class="app-btn app-btn-primary" style="width:100%;" onclick="nextStep(2,3)">Suivant →</button>
+    </div>
+
+    <div id="step-3" style="display:none;">
+      <div style="font-size:48px;margin-bottom:16px;">🎯</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;margin-bottom:10px;letter-spacing:0.04em;">Étape 2 — Hook</div>
+      <p style="color:var(--text);font-size:14px;line-height:1.7;margin-bottom:24px;">Une fois le script généré, clique sur <strong style="color:var(--accent2);">"Analyser le hook"</strong>. L'IA te donne un score et améliore ton accroche pour stopper le scroll.</p>
+      <button class="app-btn app-btn-primary" style="width:100%;" onclick="nextStep(3,4)">Suivant →</button>
+    </div>
+
+    <div id="step-4" style="display:none;">
+      <div style="font-size:48px;margin-bottom:16px;">🚀</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;margin-bottom:10px;letter-spacing:0.04em;">C'est parti !</div>
+      <p style="color:var(--text);font-size:14px;line-height:1.7;margin-bottom:24px;">Explore les 7 outils à ton rythme. Tous tes résultats sont sauvegardés dans l'<strong style="color:var(--white);">Historique</strong>. Bonne création ! 🔥</p>
+      <button class="app-btn app-btn-primary" style="width:100%;" onclick="nextStep(4,null)">Accéder à l'app →</button>
+    </div>
+
+  </div>
+</div>
 </body>
 </html>
